@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Online Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header>
+    <h1>My Online Store</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('admin_orders') }}">Admin Orders</a>
+      <a href="{{ url_for('order') }}">Place Order</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Menu</h2>
+    <ul>
+      {% for food in foods %}
+        <li>
+          <strong>{{ food.name }}</strong> - ${{ "%.2f"|format(food.price) }}<br>
+          {{ food.description }}
+        </li>
+      {% else %}
+        <li>No food items available.</li>
+      {% endfor %}
+    </ul>
+  </main>
+
+  <footer>
+    <p>© 2025 My Online Store</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Store Orders</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    ul {
+      padding-left: 15px;
+    }
+    form {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>All Orders</h1>
+
+  {% if orders %}
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer Phone</th>
+          <th>Foods</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Update Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.customer.phone }}</td>
+          <td>
+            <ul>
+              {% for food in order.foods %}
+                <li>{{ food.name }} (${{ "%.2f"|format(food.price) }})</li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>${{ "%.2f"|format(order.total) }}</td>
+          <td>{{ order.status }}</td>
+          <td>
+            <form action="{{ url_for('update_order_status', order_id=order.id) }}" method="POST">
+              <select name="status">
+                <option value="Pending" {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Preparing Order" {% if order.status == 'Preparing Order' %}selected{% endif %}>Preparing Order</option>
+                <option value="Rider on the Way" {% if order.status == 'Rider on the Way' %}selected{% endif %}>Rider on the Way</option>
+                <option value="Order Complete" {% if order.status == 'Order Complete' %}selected{% endif %}>Order Complete</option>
+              </select>
+              <button type="submit">Update</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No orders have been placed yet.</p>
+  {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Place Your Order</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    .food-item { margin-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Place Your Order</h1>
+
+  <form method="POST">
+    <h2>Customer Info</h2>
+
+    <label>Street:
+      <input type="text" name="street" required>
+    </label>
+
+    <label>House No.:
+      <input type="text" name="house" required>
+    </label>
+
+    <label>City:
+      <input type="text" name="city" required>
+    </label>
+
+    <label>Phone:
+      <input type="text" name="phone" required>
+    </label>
+
+    <h2>Select Food</h2>
+
+    {% if foods %}
+      {% for food in foods %}
+        <div class="food-item">
+          <label>
+            <input type="checkbox" name="food_ids" value="{{ food.id }}">
+            {{ food.name }} - ${{ "%.2f"|format(food.price) }} <br>
+            <small>{{ food.description }}</small>
+          </label>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p><em>No food available to order.</em></p>
+    {% endif %}
+
+    <br>
+    <button type="submit">Submit Order</button>
+  </form>
+</body>
+</html>
